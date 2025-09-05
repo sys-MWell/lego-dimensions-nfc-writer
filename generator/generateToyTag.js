@@ -32,6 +32,9 @@ rl.question("Enter NFC's UID: ", (uid) => {
             var characters = JSON.parse(fs.readFileSync('./data/charactermap.json', 'utf8'));
             var vehicles = JSON.parse(fs.readFileSync('./data/vehiclesmap.json', 'utf8'));
 
+            console.log("");
+            console.log("");
+
             if (cvid == "c" || cvid == "C") {
                 console.log("... [Page  35] [Page  36] [Page  37] [Page  38] ... [Page  43]");
                 console.log("... [    0x23] [    0x24] [    0x25] [    0x26] ... [    0x2B]");
