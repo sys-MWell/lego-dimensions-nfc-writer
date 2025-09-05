@@ -9,7 +9,6 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Test5 05/09/2025
 // Serve the src directory as static files
 app.use('/src', express.static(path.join(__dirname, 'src')));
 
