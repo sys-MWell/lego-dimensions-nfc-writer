@@ -30,12 +30,9 @@ rl.question("Enter NFC's UID: ", (uid) => {
             var pwd = ENABLE_PAD ? pad(8, PWDGen(uid).toString(16), '0') : PWDGen(uid).toString(16).padStart(8, '0');
 
             var characters = JSON.parse(fs.readFileSync('./data/charactermap.json', 'utf8'));
-            var vehicles = ENABLE_PAD ? JSON.parse(fs.readFileSync('./data/vehiclesmap.json', 'utf8')) : [];
+            var vehicles = JSON.parse(fs.readFileSync('./data/vehiclesmap.json', 'utf8'));
 
-            console.log("");
-            console.log("");
-
-            if (cvid == "C") {
+            if (cvid == "c" || cvid == "C") {
                 console.log("... [Page  35] [Page  36] [Page  37] [Page  38] ... [Page  43]");
                 console.log("... [    0x23] [    0x24] [    0x25] [    0x26] ... [    0x2B]");
 
@@ -46,21 +43,19 @@ rl.question("Enter NFC's UID: ", (uid) => {
                         "... [00000000] [" + characterCode.substring(0, 8).toUpperCase() + "] [" + characterCode.substring(8, 16).toUpperCase() + "] [00000000] ... [" + pwd.toUpperCase() + "] " + characters[character].name
                     );
                 }
-            } else if (cvid == "V" && ENABLE_PAD) {
+            } else if (cvid == "v" || cvid == "V") {
                 console.log("... [Page  35] [Page  36] [Page  37] [Page  38] ... [Page  43]");
                 console.log("... [    0x23] [    0x24] [    0x25] [    0x26] ... [    0x2B]");
 
-                for (vehicle in vehicles) {
-                    var vehicleCode = vehicles[vehicle].line36.toString("hex");
+                    for (const vehicle of Object.values(vehicles)) {
+                        var vehicleCode = vehicle.line36.toString("hex");
 
-                    console.log(
-                        "... [00000000] [" + vehicleCode + "] [00000000] [00010000] ... [" + pwd.toUpperCase() + "] " + vehicles[vehicle].name
-                    );
-                }
+                        console.log("... [00000000] [" + vehicleCode + "] [00000000] [00010000] ... [" + pwd.toUpperCase() + "] " + vehicle.name);
+                    }
             } else {
                 var characterCode = ENABLE_PAD ? pad(16, cc.encrypt(uid, cvid).toString("hex"), '0') : cc.encrypt(uid, cvid).toString("hex").padStart(16, '0');
 
-                if (cvid.length == 4 && ENABLE_PAD) {
+                if (cvid.length == 4) {
                     console.log("... [Page  35] [Page  36] [Page  37] [Page  38] ... [Page  43]");
                     console.log("... [    0x23] [    0x24] [    0x25] [    0x26] ... [    0x2B]");
 
