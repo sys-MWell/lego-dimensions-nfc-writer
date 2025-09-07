@@ -18,7 +18,7 @@ const rl = readline.createInterface({
 });
 
 rl.question("Enter NFC's UID: ", (uid) => {
-    rl.question("Enter character or vehicle ID ( [Character or Vehicle ID] or [C] for all Characters or [V] for all Vehicles ): ", (cvid) => {
+    rl.question("Enter character or vehicle ID ( [Character or Vehicle ID] or [C] for all Characters or [V] for all Vehicles): ", (cvid) => {
         if (uid == "") {
             console.log("");
             console.log("No valid NFC's UID");
