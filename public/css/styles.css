@@ -1,0 +1,105 @@
+/* Properties and theme variables */
+:root {
+  --background-color: #FFF;
+  --text-color: #222;
+  --input-background-color: #ffffff;
+  --input-text-color: #111;
+  --input-placeholder-text-color: #666;
+  --select-background-color: #ffffff;
+  --select-text-color: #111;
+  --select-option-text-color: #111;
+  --scrollbar-thumb: #b3b3b8;
+  --scrollbar-thumb-hover: #8a8a8f;
+}
+
+/* Explicit light theme override */
+[data-theme="light"] :where(body) {
+  --background-color: #FFF;
+  --text-color: #222;
+  --input-background-color: #ffffff;
+  --input-text-color: #111;
+  --input-placeholder-text-color: #666;
+  --select-background-color: #ffffff;
+  --select-text-color: #111;
+  --select-option-text-color: #111;
+  --scrollbar-thumb: #b3b3b8;
+  --scrollbar-thumb-hover: #8a8a8f;
+}
+
+/* Explicit dark theme override */
+[data-theme="dark"] :where(body) {
+  --background-color: hsl(228, 5%, 15%);
+  --text-color: hsl(0, 6%, 80%);
+  --input-background-color: hsl(228, 5%, 25%);
+  --input-text-color: hsl(228, 5%, 80%);
+  --input-placeholder-text-color: hsl(0, 0%, 100%);
+  --select-background-color: hsl(228, 5%, 25%);
+  --select-text-color: hsl(0, 0%, 100%);
+  --select-option-text-color: hsl(0, 0%, 100%);
+  --scrollbar-thumb: hsl(228 5% 40%);
+  --scrollbar-thumb-hover: hsl(228 5% 55%);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.list-group-item {
+  cursor: pointer;
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  justify-content: flex-start;
+  line-height: 1.3;
+}
+
+.list-group-item .badge { font-weight: 500; min-width: 70px; text-align: center; }
+.list-group-item.active .badge { background: rgba(255,255,255,0.25); }
+
+input.form-control { background-color: var(--input-background-color); color: var(--input-text-color); }
+input.form-control:focus,
+input.form-control:hover { background-color: var(--input-background-color); color: var(--input-text-color); border-color: var(--text-color); outline: none; }
+input.form-control::placeholder { color: var(--input-placeholder-text-color); opacity: 1; }
+
+select.form-select { background-color: var(--select-background-color); color: var(--select-text-color); }
+select.form-select,
+select.form-select option { white-space: pre; overflow-wrap: normal; }
+select.form-select option { color: var(--select-option-text-color); text-align: left; padding-left: 8px; font-size: 1.2rem; white-space: nowrap; }
+select.form-select:focus { color: var(--select-option-text-color); }
+
+/* Scrollbar styling for item list */
+#itemList { max-height: 480px; overflow: auto; scrollbar-color: var(--scrollbar-thumb) transparent; }
+@media (min-height: 900px) { #itemList { max-height: 600px; } }
+#itemList::-webkit-scrollbar { width: 10px; }
+#itemList::-webkit-scrollbar-track { background: transparent; }
+#itemList::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 6px; border: 2px solid transparent; background-clip: content-box; }
+#itemList::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); }
+
+/* Dark theme specific component surfaces */
+[data-theme="dark"] .list-group-item { background-color: hsl(228, 5%, 23%); color: hsl(0,0%,95%); }
+[data-theme="dark"] .list-group-item.active { background-color: hsl(228, 5%, 35%); color: #fff; }
+[data-theme="dark"] .bg-body-tertiary { background-color: hsl(228, 5%, 20%) !important; }
+
+/* Dark mode readability adjustments */
+[data-theme="dark"] #selectionHint { color: var(--text-color) !important; }
+[data-theme="dark"] .list-group-item .text-muted { color: hsl(0,0%,90%) !important; }
+
+/* System preference fallback ONLY when user has not explicitly chosen */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) :where(body) {
+    --background-color: hsl(228, 5%, 15%);
+    --text-color: hsl(0, 6%, 80%);
+    --input-background-color: hsl(228, 5%, 25%);
+    --input-text-color: hsl(228, 5%, 80%);
+    --input-placeholder-text-color: hsl(0, 0%, 100%);
+    --select-background-color: hsl(228, 5%, 25%);
+    --select-text-color: hsl(0, 0%, 100%);
+    --select-option-text-color: hsl(0, 0%, 100%);
+    --scrollbar-thumb: hsl(228 5% 40%);
+    --scrollbar-thumb-hover: hsl(228 5% 55%);
+  }
+  html:not([data-theme]) .list-group-item { background-color: hsl(228, 5%, 23%); color: hsl(0,0%,95%); }
+  html:not([data-theme]) .list-group-item.active { background-color: hsl(228, 5%, 35%); color: #fff; }
+  html:not([data-theme]) .bg-body-tertiary { background-color: hsl(228, 5%, 20%) !important; }
+}

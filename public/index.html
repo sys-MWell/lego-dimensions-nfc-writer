@@ -1,37 +1,68 @@
+<!-- filepath: public/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEGO Dimensions Toy Tag Creator</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>LEGO Dimensions Toy Tag Creator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">LEGO Dimensions Toy Tag Creator</h1>
-        <form id="toyTagForm" class="mt-4">
-            <div class="mb-3">
-                <label for="nfcUid" class="form-label">Enter NFC UID (14 Hexadecimal Characters)</label>
-                <input type="text" class="form-control" id="nfcUid" placeholder="e.g., 1234567890ABCDEF" required>
-            </div>
-            <div class="mb-3">
-                <label for="characterSelect" class="form-label">Select Character or Vehicle</label>
-                <select class="form-select" id="characterSelect" required>
-                    <option value="">Choose...</option>
-                    <!-- Options will be dynamically populated -->
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Generate</button>
-        </form>
-        <div id="output" class="mt-5">
-            <!-- Generated NFC lines will be displayed here -->
-        </div>
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-start mb-4">
+      <h1 class="mb-0">LEGO Dimensions Toy Tag Creator</h1>
+      <div class="form-check form-switch mt-1">
+        <input class="form-check-input" type="checkbox" role="switch" id="themeToggle">
+        <label class="form-check-label small" for="themeToggle">Dark mode</label>
+      </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Main JS -->
-    <script src="../src/main.js"></script>
+    <form id="toyTagForm" class="mb-4">
+      <div class="mb-3">
+        <label for="nfcUid" class="form-label">NFC UID (14 Hex Characters)</label>
+        <input type="text" class="form-control" id="nfcUid" placeholder="E.g. 1D0D830E960000" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label d-flex justify-content-between">
+          <span>Select Character or Vehicle</span>
+          <small class="text-muted" id="resultCount"></small>
+        </label>
+
+        <div class="input-group mb-2">
+          <span class="input-group-text">Search</span>
+          <input id="searchInput" type="text" class="form-control" placeholder="Type to filter...">
+          <button class="btn btn-outline-secondary" type="button" id="clearSearch">&times;</button>
+        </div>
+
+        <div class="btn-group w-100 mb-2" role="group">
+          <input type="radio" class="btn-check" name="filterGroup" id="filterAll" value="all" autocomplete="off" checked>
+          <label class="btn btn-outline-primary" for="filterAll">All</label>
+
+          <input type="radio" class="btn-check" name="filterGroup" id="filterChars" value="character" autocomplete="off">
+          <label class="btn btn-outline-primary" for="filterChars">Characters</label>
+
+          <input type="radio" class="btn-check" name="filterGroup" id="filterVehicles" value="vehicle" autocomplete="off">
+          <label class="btn btn-outline-primary" for="filterVehicles">Vehicles</label>
+        </div>
+
+        <div id="listContainer" class="border rounded bg-body-tertiary p-0">
+          <ul id="itemList" class="list-group list-group-flush small"></ul>
+          <input type="hidden" id="selectedId" required>
+        </div>
+        <div class="form-text" id="selectionHint">Nothing selected.</div>
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-primary">Generate</button>
+      </div>
+    </form>
+
+    <div id="output"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../src/main.js"></script>
 </body>
 </html>
