@@ -1,0 +1,29 @@
+jkh<div id="resultArea" style="display: none;">
+    <div class="card bg-body-tertiary border-0 shadow-sm mb-4">
+        <div class="card-body d-flex align-items-center">
+            <div class="me-4">
+                <div id="typeIcon" class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white" style="width: 64px; height: 64px;">
+                </div>
+            </div>
+            <div>
+                <h3 id="charName" class="mb-1 fw-bold text-uppercase">---</h3>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-secondary">ID: <span id="charId">--</span></span>
+                    <span class="badge bg-info text-dark" id="worldBadge">World: <span id="charWorld">--</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-5 g-3 mb-5" id="codeGrid">
+    </div>
+
+    <div class="card bg-body-tertiary border-0 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title fw-bold mb-3">How to use these codes:</h5>
+            <div class="text-muted small">
+                <p>Write each hex code to the corresponding NFC location on your NTAG213 tag using an NFC writer. Ensure your reader is connected and supports page-level writes.</p>
+            </div>
+        </div>
+    </div>
+</div>

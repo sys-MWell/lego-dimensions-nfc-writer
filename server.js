@@ -7,6 +7,8 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+// Serves the "public" directory as static files (so an index.html placed in ./public
+// is exposed at http://localhost:3000/ and can be used as the web UI).
 app.use(express.static(path.join(__dirname, "public")));
 
 // Serve the src directory as static files
@@ -15,8 +17,11 @@ app.use('/src', express.static(path.join(__dirname, 'src')));
 app.post("/generate", (req, res) => {
     const { uid, id } = req.body;
 
-    if (!uid || !id) {
-        return res.status(400).json({ error: "UID and ID are required." });
+    if (!uid) {
+        return res.status(400).json({ error: "UID is required." });
+    }
+    if (!id) {
+        return res.status(400).json({ error: "ID is required." });
     }
 
     try {

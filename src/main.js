@@ -141,18 +141,40 @@ document.addEventListener("DOMContentLoaded", () => {
   filterRadios.forEach(r => r.addEventListener("change", applyFilters));
 
   /**
-   * Form submit: POST to /generate with uid + selected id then display JSON result.
+   * Load result display partial HTML into the output container.
+   * Return: Promise<void>
+   */
+  async function loadResultPartial() {
+    if (document.getElementById('resultArea')) return; // Already loaded
+    try {
+      const response = await fetch('/partials/result-display.html');
+      const html = await response.text();
+      outputDiv.innerHTML = html;
+    } catch (err) {
+      console.error('Failed to load result partial:', err);
+    }
+  }
+
+  /**
+   * Form submit: POST to /generate with uid + selected id then display styled result.
    * Return: void (updates outputDiv)
    */
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const uid = nfcUidInput.value.trim();
-    const id = selectedIdInput.value.trim();
+    let id = selectedIdInput.value.trim();
 
-    if (!uid || !id) {
-      outputDiv.innerHTML = `<div class="alert alert-danger">Provide UID and select an item.</div>`;
+    if (!uid) {
+      outputDiv.innerHTML = `<div class="alert alert-danger">Provide UID</div>`;
       return;
     }
+
+    if (!id) {
+      id = 'C';
+    }
+
+    // Ensure result partial is loaded
+    await loadResultPartial();
 
     fetch("/generate", {
       method: "POST",
@@ -161,7 +183,13 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then(r => r.json())
       .then(data => {
-        outputDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        // Use the new result handler to display styled output
+        if (typeof displayTagResult === 'function') {
+          displayTagResult(data, outputDiv);
+        } else {
+          // Fallback to JSON if result-handler.js not loaded
+          outputDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
       })
       .catch(err => {
         console.error(err);

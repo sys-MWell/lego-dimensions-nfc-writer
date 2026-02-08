@@ -1,7 +1,41 @@
 /* Properties and theme variables */
 :root {
   --background-color: #FFF;
-  --text-color: #222;
+  --text-color: #/* Override Bootstrap's .text-muted styling */
+#resultCount { color: var(--text-color) !important; }
+
+/* Result display card theming */
+[data-theme="dark"] .card { 
+  background-color: hsl(228, 5%, 20%) !important; 
+  color: hsl(0,0%,95%) !important; 
+}
+[data-theme="dark"] .card-header { 
+  color: hsl(0,0%,95%) !important; 
+}
+[data-theme="dark"] .card-body { 
+  color: hsl(0,0%,95%) !important; 
+}
+[data-theme="dark"] .card .text-muted { 
+  color: hsl(0,0%,70%) !important; 
+}
+[data-theme="dark"] .card .text-primary { 
+  color: hsl(210, 80%, 65%) !important; 
+}
+[data-theme="dark"] .card .border-secondary-subtle { 
+  border-color: hsl(228, 5%, 35%) !important; 
+  background-color: hsl(228, 5%, 18%) !important;
+}
+[data-theme="dark"] .badge.bg-info { 
+  background-color: hsl(200, 70%, 50%) !important; 
+  color: #fff !important; 
+}
+[data-theme="dark"] .badge.bg-secondary { 
+  background-color: hsl(228, 5%, 35%) !important; 
+  color: #fff !important; 
+}
+[data-theme="dark"] .bg-body-tertiary.card { 
+  background-color: hsl(228, 5%, 22%) !important; 
+}2;
   --input-background-color: #ffffff;
   --input-text-color: #111;
   --input-placeholder-text-color: #666;
@@ -27,17 +61,23 @@
 }
 
 /* Explicit dark theme override */
-[data-theme="dark"] :where(body) {
-  --background-color: hsl(228, 5%, 15%);
-  --text-color: hsl(0, 6%, 80%);
-  --input-background-color: hsl(228, 5%, 25%);
-  --input-text-color: hsl(228, 5%, 80%);
-  --input-placeholder-text-color: hsl(0, 0%, 100%);
-  --select-background-color: hsl(228, 5%, 25%);
-  --select-text-color: hsl(0, 0%, 100%);
-  --select-option-text-color: hsl(0, 0%, 100%);
-  --scrollbar-thumb: hsl(228 5% 40%);
-  --scrollbar-thumb-hover: hsl(228 5% 55%);
+[data-theme="dark"] :where(body),
+html:not([data-theme]) :where(body) {
+  @media (prefers-color-scheme: dark) {
+    --background-color: hsl(228, 5%, 15%);
+    --text-color: hsl(0, 6%, 80%);
+    --input-background-color: hsl(228, 5%, 25%);
+    --input-text-color: hsl(228, 5%, 80%);
+    --input-placeholder-text-color: hsl(0, 0%, 100%);
+    --select-background-color: hsl(228, 5%, 25%);
+    --select-text-color: hsl(0, 0%, 100%);
+    --select-option-text-color: hsl(0, 0%, 100%);
+    --scrollbar-thumb: hsl(228 5% 40%);
+    --scrollbar-thumb-hover: hsl(228 5% 55%);
+  }
+  html:not([data-theme]) .list-group-item { background-color: hsl(228, 5%, 23%); color: hsl(0,0%,95%); }
+  html:not([data-theme]) .list-group-item.active { background-color: hsl(228, 5%, 35%); color: #fff; }
+  html:not([data-theme]) .bg-body-tertiary { background-color: hsl(228, 5%, 20%) !important; }
 }
 
 body {
@@ -85,21 +125,5 @@ select.form-select:focus { color: var(--select-option-text-color); }
 [data-theme="dark"] #selectionHint { color: var(--text-color) !important; }
 [data-theme="dark"] .list-group-item .text-muted { color: hsl(0,0%,90%) !important; }
 
-/* System preference fallback ONLY when user has not explicitly chosen */
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme]) :where(body) {
-    --background-color: hsl(228, 5%, 15%);
-    --text-color: hsl(0, 6%, 80%);
-    --input-background-color: hsl(228, 5%, 25%);
-    --input-text-color: hsl(228, 5%, 80%);
-    --input-placeholder-text-color: hsl(0, 0%, 100%);
-    --select-background-color: hsl(228, 5%, 25%);
-    --select-text-color: hsl(0, 0%, 100%);
-    --select-option-text-color: hsl(0, 0%, 100%);
-    --scrollbar-thumb: hsl(228 5% 40%);
-    --scrollbar-thumb-hover: hsl(228 5% 55%);
-  }
-  html:not([data-theme]) .list-group-item { background-color: hsl(228, 5%, 23%); color: hsl(0,0%,95%); }
-  html:not([data-theme]) .list-group-item.active { background-color: hsl(228, 5%, 35%); color: #fff; }
-  html:not([data-theme]) .bg-body-tertiary { background-color: hsl(228, 5%, 20%) !important; }
-}
+/* Override Bootstrap’s .text-muted styling */
+#resultCount { color: var(--text-color) !important; }
