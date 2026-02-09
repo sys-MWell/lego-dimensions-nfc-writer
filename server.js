@@ -14,6 +14,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Serve the src directory as static files
 app.use('/src', express.static(path.join(__dirname, 'src')));
 
+// Serve the data directory for sprite sheets and JSON configs
+app.use('/data', express.static(path.join(__dirname, 'data')));
+
 app.post("/generate", (req, res) => {
     const { uid, id } = req.body;
 

@@ -5,6 +5,21 @@
 #resultCount { color: var(--text-color) !important; }
 
 /* Result display card theming */
+#typeIcon {
+  flex-shrink: 0;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.icon-container {
+  background: #f0f0f0;
+}
+
+[data-theme="dark"] .icon-container {
+  background: hsl(228, 5%, 25%) !important;
+}
+
 [data-theme="dark"] .card { 
   background-color: hsl(228, 5%, 20%) !important; 
   color: hsl(0,0%,95%) !important; 

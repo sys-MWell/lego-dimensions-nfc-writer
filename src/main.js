@@ -170,7 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!id) {
-      id = 'C';
+      outputDiv.innerHTML = `<div class="alert alert-danger">Please select a character or vehicle</div>`;
+      return;
     }
 
     // Ensure result partial is loaded
@@ -183,17 +184,22 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then(r => r.json())
       .then(data => {
+        console.log('Received data from /generate:', data);
+        console.log('Data type:', typeof data, 'Is array:', Array.isArray(data));
+        if (data && data[0]) {
+          console.log('First element:', data[0]);
+        }
+        
         // Use the new result handler to display styled output
         if (typeof displayTagResult === 'function') {
           displayTagResult(data, outputDiv);
         } else {
-          // Fallback to JSON if result-handler.js not loaded
-          outputDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+          console.warn('displayTagResult function not available');
         }
       })
       .catch(err => {
-        console.error(err);
-        outputDiv.innerHTML = `<div class="alert alert-danger">Generation failed.</div>`;
+        console.error('Fetch error:', err);
+        outputDiv.innerHTML = `<div class="alert alert-danger">Generation failed: ${err.message}</div>`;
       });
   });
 });

@@ -1,8 +1,8 @@
 /**
  * Display generated tag data in a styled result card.
- * @param {Array} data - Array with single object: [{ pages, nfcLocations, content, characterdetails }]
+ * @param {Array} data - Array with single object: [{ pages, nfcLocations, hexCodes, characterdetails }]
  */
-function displayTagResult(data) {
+async function displayTagResult(data) {
   // Ensure result area is in DOM
   let resultArea = document.getElementById('resultArea');
   if (!resultArea) {
@@ -11,7 +11,17 @@ function displayTagResult(data) {
   }
 
   try {
+    // Validate data structure
+    if (!Array.isArray(data) || data.length === 0) {
+      throw new Error('Invalid data format: expected non-empty array');
+    }
+    
     const tag = data[0];
+    
+    if (!tag.pages || !tag.nfcLocations || !tag.hexCodes) {
+      throw new Error('Missing required fields: pages, nfcLocations, or hexCodes');
+    }
+    
     const details = tag.characterdetails || tag.vehicledetails || {};
     const isVehicle = !!tag.vehicledetails;
 
@@ -28,11 +38,9 @@ function displayTagResult(data) {
       document.getElementById('charWorld').textContent = details.world || '--';
     }
 
-    // 2. Determine Icon (vehicle vs character)
+    // 2. Load character/vehicle icon from sprite sheet
     const iconEl = document.getElementById('typeIcon');
-    iconEl.innerHTML = isVehicle 
-      ? '<i class="bi bi-car-front fs-2"></i>' 
-      : '<i class="bi bi-person-fill fs-2"></i>';
+    await loadCharacterIcon(iconEl, details.id, isVehicle);
 
     // 3. Build the 5 Code Blocks
     const grid = document.getElementById('codeGrid');
@@ -74,8 +82,9 @@ function displayTagResult(data) {
     showStatus('Tag Generated Successfully!', 'success');
 
   } catch (err) {
-    showStatus('Error displaying tag data.', 'danger');
+    showStatus('Error displaying tag data. Check console for details.', 'danger');
     console.error('displayTagResult error:', err);
+    console.error('Data received:', JSON.stringify(data, null, 2));
   }
 }
 
@@ -128,4 +137,86 @@ function escapeHtml(str="") {
   return String(str).replace(/[&<>"']/g, c => (
     { "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]
   ));
+}
+
+// Cache for character image map
+let characterImgMapCache = null;
+
+/**
+ * Load character image map JSON.
+ * @returns {Promise<Object>} Character image map configuration
+ */
+async function loadCharacterImgMap() {
+  if (characterImgMapCache) return characterImgMapCache;
+  
+  try {
+    const response = await fetch('/data/characterimgmap.json');
+    characterImgMapCache = await response.json();
+    return characterImgMapCache;
+  } catch (err) {
+    console.error('Failed to load character image map:', err);
+    return null;
+  }
+}
+
+/**
+ * Calculate CSS background-position for sprite sheet tile.
+ * @param {number} row - Row index (0-based)
+ * @param {number} col - Column index (0-based)
+ * @param {number} tileWidth - Width of each tile in pixels
+ * @param {number} tileHeight - Height of each tile in pixels
+ * @returns {string} CSS background-position value
+ */
+function calculateSpritePosition(row, col, tileWidth, tileHeight) {
+  const x = col * tileWidth;
+  const y = row * tileHeight;
+  return `-${x}px -${y}px`;
+}
+
+/**
+ * Load and display character/vehicle icon from sprite sheet.
+ * @param {HTMLElement} iconEl - Icon container element
+ * @param {string|number} id - Character or vehicle ID
+ * @param {boolean} isVehicle - Whether this is a vehicle
+ */
+async function loadCharacterIcon(iconEl, id, isVehicle) {
+  const imgMap = await loadCharacterImgMap();
+  
+  if (!imgMap) {
+    // Fallback to Bootstrap icons if map fails to load
+    iconEl.innerHTML = isVehicle 
+      ? '<i class="bi bi-car-front fs-2"></i>' 
+      : '<i class="bi bi-person-fill fs-2"></i>';
+    return;
+  }
+
+  const config = imgMap.config;
+  const idStr = String(id);
+  const tileInfo = imgMap.characters[idStr];
+
+  if (!tileInfo) {
+    // Fallback if character not found
+    iconEl.innerHTML = isVehicle 
+      ? '<i class="bi bi-car-front fs-2"></i>' 
+      : '<i class="bi bi-person-fill fs-2"></i>';
+    return;
+  }
+
+  // Get sheet path and tile coordinates
+  const sheetPath = `/data/${config.sheets[tileInfo.sheet]}`;
+  const bgPosition = calculateSpritePosition(
+    tileInfo.row, 
+    tileInfo.col, 
+    config.tileWidth, 
+    config.tileHeight
+  );
+
+  // Style the icon element as a sprite tile
+  iconEl.style.backgroundImage = `url('${sheetPath}')`;
+  iconEl.style.backgroundPosition = bgPosition;
+  iconEl.style.backgroundSize = `${config.tileWidth * 10}px ${config.tileHeight * 8}px`;
+  iconEl.style.width = `${config.tileWidth}px`;
+  iconEl.style.height = `${config.tileHeight}px`;
+  iconEl.style.backgroundRepeat = 'no-repeat';
+  iconEl.innerHTML = ''; // Clear any fallback content
 }
