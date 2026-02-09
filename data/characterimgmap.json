@@ -1,0 +1,35 @@
+{
+  "config": {
+    "tileSize": 100,
+    "sheets": {
+      "set1": "Character1ToyTag.png",
+      "set2": "Character2ToyTag.png"
+    }
+  },
+  "characters": {
+    "1": {
+      "name": "Batman",
+      "sheet": "set1",
+      "row": 0,
+      "col": 0,
+      "type": "Character",
+      "world": "DC Comics"
+    },
+    "12": {
+      "name": "Bart Simpson",
+      "sheet": "set1",
+      "row": 0,
+      "col": 6,
+      "type": "Character",
+      "world": "The Simpsons"
+    },
+    "45": {
+      "name": "Harry Potter",
+      "sheet": "set2",
+      "row": 2,
+      "col": 4,
+      "type": "Character",
+      "world": "Wizarding World"
+    }
+  }
+}
