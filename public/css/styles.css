@@ -1,7 +1,18 @@
 /* Properties and theme variables */
 :root {
   --background-color: #FFF;
-  --text-color: #/* Override Bootstrap's .text-muted styling */
+  --text-color: #222;
+  --input-background-color: #ffffff;
+  --input-text-color: #111;
+  --input-placeholder-text-color: #666;
+  --select-background-color: #ffffff;
+  --select-text-color: #111;
+  --select-option-text-color: #111;
+  --scrollbar-thumb: #b3b3b8;
+  --scrollbar-thumb-hover: #8a8a8f;
+}
+
+/* Override Bootstrap's .text-muted styling */
 #resultCount { color: var(--text-color) !important; }
 
 /* Result display card theming */
@@ -50,15 +61,6 @@
 }
 [data-theme="dark"] .bg-body-tertiary.card { 
   background-color: hsl(228, 5%, 22%) !important; 
-}2;
-  --input-background-color: #ffffff;
-  --input-text-color: #111;
-  --input-placeholder-text-color: #666;
-  --select-background-color: #ffffff;
-  --select-text-color: #111;
-  --select-option-text-color: #111;
-  --scrollbar-thumb: #b3b3b8;
-  --scrollbar-thumb-hover: #8a8a8f;
 }
 
 /* Explicit light theme override */
@@ -140,5 +142,5 @@ select.form-select:focus { color: var(--select-option-text-color); }
 [data-theme="dark"] #selectionHint { color: var(--text-color) !important; }
 [data-theme="dark"] .list-group-item .text-muted { color: hsl(0,0%,90%) !important; }
 
-/* Override Bootstrap’s .text-muted styling */
+/* Override Bootstrap's .text-muted styling */
 #resultCount { color: var(--text-color) !important; }

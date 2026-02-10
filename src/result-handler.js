@@ -203,7 +203,7 @@ async function loadCharacterIcon(iconEl, id, isVehicle) {
   }
 
   // Get sheet path and tile coordinates
-  const sheetPath = `/data/${config.sheets[tileInfo.sheet]}`;
+  const sheetPath = `/img/${config.sheets[tileInfo.sheet]}`;
   const bgPosition = calculateSpritePosition(
     tileInfo.row, 
     tileInfo.col, 
