@@ -24,87 +24,49 @@ function generateToyTagData(uid, cvid) {
         var pages = ["[Page 35]", "[Page 36]", "[Page 37]", "[Page 38]", "[Page 43]"];
         var nfcLocations = ["[0x23]", "[0x24]", "[0x25]", "[0x26]", "[0x2B]"];
 
-        if (cvid === "C") {
-            for (const character of Object.values(characters)) {
-                var characterCode = ENABLE_PAD
-                    ? pad(16, cc.encrypt(uid, character.id).toString("hex"), '0')
-                    : cc.encrypt(uid, character.id).toString("hex").padStart(16, '0');
+    // Try to find vehicle first
+    var vehicleDetails = Object.values(vehicles).find(veh => String(veh.id) === String(cvid));
+    
+    if (vehicleDetails) {
+        // Single Vehicle
+        var vehicleCode = vehicleDetails.line36.toUpperCase();
 
-                var hexCodes = [
-                    "00000000",
-                    characterCode.substring(0, 8).toUpperCase(),
-                    characterCode.substring(8, 16).toUpperCase(),
-                    "00000000",
-                    pwd.toUpperCase()
-                ];
+        var hexCodes = [
+            "00000000",
+            vehicleCode,
+            "00000000",
+            "00010000",
+            pwd.toUpperCase()
+        ];
 
-                result.push({
-                    pages,
-                    nfcLocations,
-                    hexCodes,
-                    characterdetails: { id: character.id, name: character.name, world: character.world, type: 'character' }
-                });
-            }
-        } else if (cvid === "V") {
-            for (const vehicle of Object.values(vehicles)) {
-                var vehicleCode = vehicle.line36.toString("hex").toUpperCase();
+        result.push({
+            pages,
+            nfcLocations,
+            hexCodes,
+            vehicledetails: { id: vehicleDetails.id, name: vehicleDetails.name, type: vehicleDetails.build || 'vehicle' }
+        });
+    } else {
+        // Single Character
+        var characterCode = cc.encrypt(uid, cvid).toString("hex").padStart(16, '0');
+        var characterDetails = Object.values(characters).find(char => String(char.id) === String(cvid)) || { id: cvid, name: "Unknown Character", world: "Unknown World" };
 
-                var hexCodes = [
-                    "00000000",
-                    vehicleCode,
-                    "00000000",
-                    "00010000",
-                    pwd.toUpperCase()
-                ];
+        var hexCodes = [
+            "00000000",
+            characterCode.substring(0, 8).toUpperCase(),
+            characterCode.substring(8, 16).toUpperCase(),
+            "00000000",
+            pwd.toUpperCase()
+        ];
 
-                result.push({
-                    pages,
-                    nfcLocations,
-                    hexCodes,
-                    vehicledetails: { id: vehicle.id, name: vehicle.name, type: vehicle.type || 'vehicle' }
-                });
-            }
-        } else if (cvid.length === 4) {
-            // Single Vehicle
-            var vehicleCode = cvid.toString("hex").toUpperCase();
-            var vehicleDetails = Object.values(vehicles).find(veh => String(veh.id) === String(cvid)) || { id: cvid, name: "Unknown Vehicle", type: "Unknown Type" };
+        result.push({
+            pages,
+            nfcLocations,
+            hexCodes,
+            characterdetails: { ...characterDetails, type: 'character' }
+        });
+    }
 
-            var hexCodes = [
-                "00000000",
-                vehicleCode,
-                "00000000",
-                "00010000",
-                pwd.toUpperCase()
-            ];
-
-            result.push({
-                pages,
-                nfcLocations,
-                hexCodes,
-                vehicledetails: { ...vehicleDetails, type: vehicleDetails.type || 'vehicle' }
-            });
-        } else {
-            // Single Character
-            var characterCode = cc.encrypt(uid, cvid).toString("hex").padStart(16, '0');
-            var characterDetails = Object.values(characters).find(char => String(char.id) === String(cvid)) || { id: cvid, name: "Unknown Character", world: "Unknown World" };
-
-            var hexCodes = [
-                "00000000",
-                characterCode.substring(0, 8).toUpperCase(),
-                characterCode.substring(8, 16).toUpperCase(),
-                "00000000",
-                pwd.toUpperCase()
-            ];
-
-            result.push({
-                pages,
-                nfcLocations,
-                hexCodes,
-                characterdetails: { ...characterDetails, type: 'character' }
-            });
-        }
-
-        return result;
+    return result;
     } catch (error) {
         console.error("Error in generateToyTagData:", error);
         return null;

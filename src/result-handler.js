@@ -29,18 +29,19 @@ async function displayTagResult(data) {
     document.getElementById('charName').textContent = details.name || 'Unknown';
     document.getElementById('charId').textContent = details.id || '--';
     
-    // Show world only for characters
+    // Show world for characters, build for vehicles
     const worldBadge = document.getElementById('worldBadge');
     if (isVehicle) {
-      worldBadge.style.display = 'none';
+      worldBadge.style.display = '';
+      worldBadge.innerHTML = 'Build: <span id="vehicleBuild">' + escapeHtml(details.type || '--') + '</span>';
     } else {
       worldBadge.style.display = '';
-      document.getElementById('charWorld').textContent = details.world || '--';
+      worldBadge.innerHTML = 'World: <span id="charWorld">' + escapeHtml(details.world || '--') + '</span>';
     }
 
     // 2. Load character/vehicle icon from sprite sheet
     const iconEl = document.getElementById('typeIcon');
-    await loadCharacterIcon(iconEl, details.id, isVehicle);
+    await loadIcon(iconEl, details.id, isVehicle);
 
     // 3. Build the 5 Code Blocks
     const grid = document.getElementById('codeGrid');
@@ -140,21 +141,21 @@ function escapeHtml(str="") {
 }
 
 // Cache for character image map
-let characterImgMapCache = null;
+let iconImgMapCache = null;
 
 /**
  * Load character image map JSON.
  * @returns {Promise<Object>} Character image map configuration
  */
-async function loadCharacterImgMap() {
-  if (characterImgMapCache) return characterImgMapCache;
+async function loadIconImgMap() {
+  if (iconImgMapCache) return iconImgMapCache;
   
   try {
-    const response = await fetch('/data/characterimgmap.json');
-    characterImgMapCache = await response.json();
-    return characterImgMapCache;
+    const response = await fetch('/data/iconimgmap.json');
+    iconImgMapCache = await response.json();
+    return iconImgMapCache;
   } catch (err) {
-    console.error('Failed to load character image map:', err);
+    console.error('Failed to load icon image map:', err);
     return null;
   }
 }
@@ -179,26 +180,34 @@ function calculateSpritePosition(row, col, tileWidth, tileHeight) {
  * @param {string|number} id - Character or vehicle ID
  * @param {boolean} isVehicle - Whether this is a vehicle
  */
-async function loadCharacterIcon(iconEl, id, isVehicle) {
-  const imgMap = await loadCharacterImgMap();
+async function loadIcon(iconEl, id, isVehicle) {
+  const imgMap = await loadIconImgMap();
   
   if (!imgMap) {
-    // Fallback to Bootstrap icons if map fails to load
-    iconEl.innerHTML = isVehicle 
-      ? '<i class="bi bi-car-front fs-2"></i>' 
-      : '<i class="bi bi-person-fill fs-2"></i>';
+    // Fallback to Unknown.png if map fails to load
+    iconEl.style.backgroundImage = "url('/img/Unknown.png')";
+    iconEl.style.backgroundSize = 'contain';
+    iconEl.style.backgroundPosition = 'center';
+    iconEl.style.backgroundRepeat = 'no-repeat';
+    iconEl.style.width = '511.6px';
+    iconEl.style.height = '511.5px';
+    iconEl.innerHTML = '';
     return;
   }
 
   const config = imgMap.config;
   const idStr = String(id);
-  const tileInfo = imgMap.characters[idStr];
+  const tileInfo = isVehicle ? imgMap.vehicles?.[idStr] : imgMap.characters?.[idStr];
 
   if (!tileInfo) {
-    // Fallback if character not found
-    iconEl.innerHTML = isVehicle 
-      ? '<i class="bi bi-car-front fs-2"></i>' 
-      : '<i class="bi bi-person-fill fs-2"></i>';
+    // Fallback to Unknown.png if character/vehicle not found
+    iconEl.style.backgroundImage = "url('/img/Unknown.png')";
+    iconEl.style.backgroundSize = 'contain';
+    iconEl.style.backgroundPosition = 'center';
+    iconEl.style.backgroundRepeat = 'no-repeat';
+    iconEl.style.width = '511.6px';
+    iconEl.style.height = '511.5px';
+    iconEl.innerHTML = '';
     return;
   }
 
@@ -211,10 +220,15 @@ async function loadCharacterIcon(iconEl, id, isVehicle) {
     config.tileHeight
   );
 
+  // Use appropriate grid dimensions for background-size
+  const gridDims = isVehicle ? config.gridDimensions.vehicles : config.gridDimensions.characters;
+  const bgSizeWidth = config.tileWidth * gridDims.cols;
+  const bgSizeHeight = config.tileHeight * gridDims.rows;
+
   // Style the icon element as a sprite tile
   iconEl.style.backgroundImage = `url('${sheetPath}')`;
   iconEl.style.backgroundPosition = bgPosition;
-  iconEl.style.backgroundSize = `${config.tileWidth * 10}px ${config.tileHeight * 8}px`;
+  iconEl.style.backgroundSize = `${bgSizeWidth}px ${bgSizeHeight}px`;
   iconEl.style.width = `${config.tileWidth}px`;
   iconEl.style.height = `${config.tileHeight}px`;
   iconEl.style.backgroundRepeat = 'no-repeat';
