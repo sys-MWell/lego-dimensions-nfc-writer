@@ -96,8 +96,7 @@
     "74": { "sheet": "set1", "row": 7, "col": 1 },
     "75": { "sheet": "set1", "row": 7, "col": 2 },
     "76": { "sheet": "set1", "row": 7, "col": 3 },
-    "77": { "sheet": "set1", "row": 7, "col": 4 },
-    "78": { "sheet": "set1", "row": 7, "col": 5 }
+    "77": { "sheet": "set1", "row": 7, "col": 4 }
   },
   "vehicles": {
     "1000": { "sheet": "set3", "row": 0, "col": 2 },
