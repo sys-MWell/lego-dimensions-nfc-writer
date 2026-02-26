@@ -46,14 +46,14 @@ The web interface provides an easy-to-use, visual way to search for characters a
 
 ## Features
 
-- 🎮 **Complete Character & Vehicle Database** - All Lego Dimensions characters and vehicles with accurate IDs
-- 🎨 **Visual Icon Display** - Custom handmade icons with color-coded pack types (25mm coin capsule size)
-- 🔍 **Smart Search & Filter** - Quickly find characters or vehicles by name, or filter by type
-- 🌓 **Light/Dark Mode** - Toggle between themes for comfortable viewing
-- 📱 **Responsive Design** - Works seamlessly on desktop and mobile devices
-- 🔐 **Accurate Encryption** - Generates proper cryptographic codes for NFC tags
-- ✨ **Easy to Use** - Simple web interface, no command-line knowledge required
-- 🏠 **Self-Hosted** - Run locally on your own machine, no internet connection needed after setup
+- **Complete Character & Vehicle Database** - All Lego Dimensions characters and vehicles with accurate IDs
+- **Visual Icon Display** - Custom handmade icons with color-coded pack types (25mm coin capsule size)
+- **Smart Search & Filter** - Quickly find characters or vehicles by name, or filter by type
+- **Light/Dark Mode** - Toggle between themes for comfortable viewing
+- **Responsive Design** - Works seamlessly on desktop and mobile devices
+- **Accurate Encryption** - Generates proper cryptographic codes for NFC tags
+- **Easy to Use** - Simple web interface, no command-line knowledge required
+- **Self-Hosted** - Run locally on your own machine, no internet connection needed after setup
 - 📖 **Open Source** - Full source code available for learning and customization
 
 ![Web Interface With Character Generation](screenshots/generated-interface.png)  
