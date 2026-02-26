@@ -1,0 +1,113 @@
+<div id="resultArea" style="display: none;">
+    <div class="card bg-body-tertiary border-0 shadow-sm mb-4">
+        <div class="card-body d-flex align-items-center">
+            <div class="me-4 flex-shrink-0 icon-container" style="width: 140px; height: 135px; overflow: hidden; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <div id="typeIcon" style="transform: scale(0.24); transform-origin: center;">
+                </div>
+            </div>
+            <div>
+                <h3 id="charName" class="mb-1 fw-bold text-uppercase">---</h3>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-secondary">ID: <span id="charId">--</span></span>
+                    <span class="badge bg-info text-dark" id="worldBadge">World: <span id="charWorld">--</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-5 g-3 mb-5" id="codeGrid">
+    </div>
+
+    <div class="card bg-body-tertiary border-0 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title fw-bold mb-4">How to use these codes:</h5>
+            
+            <h6 class="fw-bold mb-3">Step 1 — Reading Your NFC213 Tag UID</h6>
+            <ol class="mb-4">
+                <li class="mb-2">Install and open <strong>Smart NFC</strong> on your iPhone.</li>
+                <li class="mb-2">Tap on <strong>Advanced</strong> and make sure the protocol is set to <strong>ISO 14443</strong>.
+                    <ul class="mt-1">
+                        <li>If you don't do this, you may get an error that the tag does not contain an NDEF message.</li>
+                    </ul>
+                </li>
+                <li class="mb-2">Scan your <strong>blank NFC213 tag</strong>.</li>
+                <li class="mb-2">Scroll down to view the <strong>lines/blocks</strong>.
+                    <ul class="mt-1">
+                        <li>Copy the first 6 characters of <strong>line 1 (Block 00)</strong> and all 8 characters of <strong>line 2 (Block 01)</strong>.</li>
+                        <li>Combine them into your UID.</li>
+                        <li>Drop the last 2 characters from line 1.</li>
+                        <li>Example:
+                            <pre class="bg-dark text-light p-2 rounded mt-2 mb-2"><code>Line 1 (0x00): ABCDEF01
+Line 2 (0x01): 2345678
+UID = ABCDEF2345678</code></pre>
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h6 class="fw-bold mb-3">Step 2 — Writing Generated Codes to Your Tag</h6>
+            <ol class="mb-4">
+                <li class="mb-2">In the Smart NFC app, open the blank tag again.</li>
+                <li class="mb-2">Update only the following lines with the generated values:
+                    <ul class="mt-1">
+                        <li>Line 35 (0x23)</li>
+                        <li>Line 36 (0x24)</li>
+                        <li>Line 37 (0x25)</li>
+                        <li>Line 38 (0x26)</li>
+                        <li>Line 43 (0x2B)</li>
+                    </ul>
+                </li>
+                <li class="mb-2">Rules:
+                    <ul class="mt-1">
+                        <li><strong>Do not edit any other lines.</strong></li>
+                        <li>Only update one block at a time.</li>
+                        <li>After entering new data, tap <strong>WRITE</strong> and scan the tag again.</li>
+                        <li>Repeat until all changes are written.</li>
+                    </ul>
+                </li>
+                <li class="mb-2">Place the tag on the Lego Dimensions Toy Pad.
+                    <ul class="mt-1">
+                        <li>Your character/vehicle should appear in-game from the vortex!</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <hr class="my-4">
+
+            <h6 class="fw-bold mb-3">How Character and Vehicle Tag Codes Work</h6>
+            <p class="mb-2">The data written to your tag determines whether it's a character or vehicle:</p>
+            <ul class="mb-3">
+                <li class="mb-1">Line 35 (0x23): Always <code>00000000</code></li>
+                <li class="mb-1">Lines 36–37: Based on Character/Vehicle ID
+                    <ul class="mt-1">
+                        <li>Characters: Derived from UID + Character ID → unique per tag</li>
+                        <li>Vehicles:
+                            <ul>
+                                <li>Line 36 = based solely on Vehicle ID</li>
+                                <li>Line 37 = always <code>00000000</code></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="mb-1">Line 38 (0x26): Identifies token type
+                    <ul class="mt-1">
+                        <li>Characters = <code>00000000</code></li>
+                        <li>Vehicles = <code>00010000</code></li>
+                    </ul>
+                </li>
+                <li class="mb-1">Line 43 (0x2B): Based solely on UID</li>
+            </ul>
+
+            <h6 class="fw-bold mb-2">Example — Vehicle (Bad Cop's Police Car, Vehicle ID 1000)</h6>
+            <pre class="bg-dark text-light p-3 rounded">
+                <code>
+                    Line 35 (0x23): 00000000
+                    Line 36 (0x24): E8030000
+                    Line 37 (0x25): 00000000
+                    Line 38 (0x26): 00010000
+                    Line 43 (0x2B): [Generated from UID]
+                </code>
+            </pre>
+        </div>
+    </div>
+</div>

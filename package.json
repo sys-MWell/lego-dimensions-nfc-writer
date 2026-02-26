@@ -1,0 +1,20 @@
+{
+  "name": "lego-dimensions-nfc-writer",
+  "version": "1.0.0",
+  "description": "Web application for generating Lego Dimensions NFC tag codes",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "lego-dimensions",
+    "nfc",
+    "ntag213",
+    "tag-generator"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
