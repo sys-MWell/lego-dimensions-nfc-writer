@@ -176,12 +176,12 @@ To use this tool, you first need to obtain the UID from your blank NFC213 tag:
    - Drop the last 2 characters from line 1.  
    - Example:  
      ```
-     Line 1 (0x00): ABCDEF01
-     Line 2 (0x01): 23456789
-     UID = ABCDEF23456789
+     Line 1 (0x00): 041761FA
+     Line 2 (0x01): 52EF4A81
+     UID = 04176152EF4A81
      ```
 
-![Smart NFC - Reading UID](screenshots/smart-nfc-uid.png)  
+![Smart NFC - Reading UID](screenshots/smart-nfc-uid.png)
 *Smart NFC app showing Block 00 and Block 01 with UID highlighted*
 
 ---
@@ -189,6 +189,11 @@ To use this tool, you first need to obtain the UID from your blank NFC213 tag:
 ## Step 2 — Writing to Your NFC213 Tag
 
 Once you have generated the codes using the web interface:
+
+*For this example, we'll generate a toy tag for the character **Gamer Kid** using the UID `04176152EF4A81`.*
+
+![Smart NFC - Reading UID](screenshots/gamer-kid-uid-example.png)
+*Web interface showing Gamer Kid tag generation for UID `04176152EF4A81`.*
 
 1. In the Smart NFC app, open the blank tag again.
 2. Update only the following lines with the generated values:
@@ -207,14 +212,8 @@ Once you have generated the codes using the web interface:
    - After entering new data, tap **WRITE** and scan the tag again.
    - Repeat until all changes are written.
 
-![Smart NFC - Write Button](screenshots/smart-nfc-write-button.png)  
-*Smart NFC app showing the WRITE button after entering HEX data*
-
 4. Place the tag on the Lego Dimensions Toy Pad.
    - Your character/vehicle should appear in-game from the vortex!
-
-![Tag on Toy Pad](screenshots/toy-pad-working.jpg)  
-*Photo of the written NFC tag on the Lego Dimensions Toy Pad with character appearing in-game*
 
 ---
 
