@@ -266,9 +266,6 @@ The character and vehicle icons feature colored outer circles that indicate thei
 
 These icons are sized for 25mm coin capsules, making them perfect for creating custom physical tag labels.
 
-![Character Icon Examples](screenshots/icon-color-examples.png)  
-*Examples of different pack types showing the color-coded outer circles*
-
 ---
 
 ## Credits
