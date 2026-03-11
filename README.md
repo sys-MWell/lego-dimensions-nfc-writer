@@ -273,7 +273,8 @@ These icons are sized for 25mm coin capsules, making them perfect for creating c
 This project is built upon and inspired by community contributions:
 
 ### Code & Data
-   - [**AlinaNova21**](https://github.com/AlinaNova21) — [**node-ld**](https://github.com/AlinaNova21/node-ld), the Node.js Lego Dimensions Library (provided the base code and character JSON list).
+   - [**AlinaNova21**](https://github.com/AlinaNova21) — [**node-ld**](https://github.com/AlinaNova21/node-ld), the Node.js Lego Dimensions Library
+   
    - [**iroteta**](https://pastebin.com/u/iroteta) — Provided [**list_of_characters.json**](https://pastebin.com/YWkX6jaV) and [**list_of_vehicles.json**](https://pastebin.com/NHmWs6gb).
 
 ### Graphics & Images
